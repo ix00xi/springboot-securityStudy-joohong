@@ -21,9 +21,10 @@ public class User {
 	private String user_email;
 	private String user_id;
 	private String user_password;
-	private String user_roles;			// ROLE_USER, ROLE_ADMIN, ROLE_MANAGER
+	private String user_roles;				// ROLE_USER,ROLE_ADMIN,ROLE_MANAGER
 	private String user_provider;
 	private String user_profile_img;
+	private String user_address;
 	private String user_phone;
 	private int user_gender;
 	
@@ -32,6 +33,6 @@ public class User {
 			return new ArrayList<String>();
 		}
 		return Arrays.asList(user_roles.replaceAll(" ", "").split(","));
-		
 	}
 }
+

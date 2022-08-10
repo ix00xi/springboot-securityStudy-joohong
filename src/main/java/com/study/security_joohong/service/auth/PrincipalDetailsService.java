@@ -11,15 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.study.security_joohong.domain.user.User;
 import com.study.security_joohong.domain.user.UserRepository;
+import com.study.security_joohong.web.dto.auth.SignupReqDto;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PrincipalDetailsService implements UserDetailsService{
+public class PrincipalDetailsService implements UserDetailsService {
 	
 	private final UserRepository userRepository;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User userEntity = null;
@@ -38,21 +39,10 @@ public class PrincipalDetailsService implements UserDetailsService{
 		return new PrincipalDetails(userEntity);
 	}
 	
-	public boolean addUser() {
-		User user = User.builder()
-						.user_name("전주홍")
-						.user_email("izx43@naver.com")
-						.user_id("abcd")
-						.user_password(new BCryptPasswordEncoder().encode("1234"))
-						.user_roles("ROLE_USER, ROLE_MANAGER")
-						.build();
+	public boolean addUser(SignupReqDto signupReqDto) throws Exception {
 		
-		try {
-			userRepository.save(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
+		return userRepository.save(signupReqDto.toEntity()) > 0;
 	}
+
 }
+

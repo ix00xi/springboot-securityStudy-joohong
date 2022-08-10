@@ -13,7 +13,6 @@ import lombok.Data;
 
 @Data
 public class PrincipalDetails implements UserDetails {
-
 	private static final long serialVersionUID = 1L;
 	
 	private User user;
@@ -30,7 +29,8 @@ public class PrincipalDetails implements UserDetails {
 //		
 //		for(String role : roleList) {
 //			GrantedAuthority authority = new GrantedAuthority() {
-//				
+//				private static final long serialVersionUID = 1L;
+//
 //				@Override
 //				public String getAuthority() {
 //					return role;
@@ -96,6 +96,5 @@ public class PrincipalDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
 
 }

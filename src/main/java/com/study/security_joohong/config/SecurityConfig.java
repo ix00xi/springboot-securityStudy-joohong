@@ -15,22 +15,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import com.study.security_joohong.config.auth.AuthFailuerHandler;
+import com.study.security_joohong.config.auth.AuthFailureHandler;
 
-// 중요
-@EnableWebSecurity	// 기존의 WebSecurityConfigurerAdapter를 비활성 시키고 현재 시큐리티 설정을 따르겠다는 의미
+@EnableWebSecurity //기존의 WebSecurityConfigurerAdapter를 비활성 시키고 현재 시큐리티 설정을 따르겠다.
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	
-	// 암호화 설정을 위해 꼭 사용한다
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Override							// 빌더 형식
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
@@ -43,19 +39,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/api/v1/grant/test/admin/**")
 			.access("hasRole('ROLE_ADMIN')")
 			
-			.antMatchers("/", "/index", "/mypage/**")		// 우리가 지정한 요청
-			.authenticated()								// 인증을 거쳐라 
+			.antMatchers("/", "/index", "/mypage/**")			// 우리가 지정한 요청
+			.authenticated()									// 인증을 거쳐라
 			
-			.anyRequest()									// 다른 모든 요청
-			.permitAll()									// 모두 접근 권한을 부여하겠다.
+			.anyRequest()										// 다른 모든요청은
+			.permitAll()										// 모두 접근 권한을 부여하겠다.
 			
 			.and()
 			
-			.formLogin()									// 로그인 방식은 form 로그인을 사용하겠다.
-			.usernameParameter("id")
-//			.loginPage("/auth/signin")						// 로그인 페이지는 해당 get요청을 통해 접근한다.
-			.loginProcessingUrl("/auth/signin")				// 로그인 요청(Post 요청)
-			.failureHandler(new AuthFailuerHandler())
-			.defaultSuccessUrl("/");
+			.formLogin()										// 로그인 방식은 form로그인을 사용하겠다.
+			.loginPage("/auth/signin") 							// 로그인 페이지는 해당 get요청을 통해 접근한다.
+			.loginProcessingUrl("/auth/signin")					// 로그인 요청(post요청)
+			.failureHandler(new AuthFailureHandler())
+			.defaultSuccessUrl("/index");
 	}
+	
 }
