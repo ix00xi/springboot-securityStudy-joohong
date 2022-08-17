@@ -20,18 +20,38 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
-private final UserRepository userRepository;
+	
+	private final UserRepository userRepository;
+	
+	/*
+	 * OAuth2User의 정보를 우리 서버 database에 등록
+	 */
 	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		String provider = null;
 		
+		/*
+		 * super.loadUser(userRequest)
+		 * 엔드포인트 결과 즉, OAuth2User 정보를 가진 객체를 리턴
+		 */
 		OAuth2User oAuth2User = super.loadUser(userRequest);
+		
+		/*
+		 * Provider 정보(클라이언트 아이디, 클라이언트 시크릿, 클라이언트 네임)
+		 */
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();
+		
+		/*
+		 * 실제 프로필 정보(Map형태)
+		 */
 		Map<String, Object> attributes = oAuth2User.getAttributes();
 		log.error(">>>>> ClientRegistration: {}", clientRegistration);
 		log.error(">>>>> attributes: {}", attributes);
 		
+		/*
+		 *  
+		 */
 		provider = clientRegistration.getClientName();
 		
 		User user = getOAuth2User(provider, attributes);
@@ -40,9 +60,11 @@ private final UserRepository userRepository;
 	}
 	
 	private User getOAuth2User(String provider, Map<String, Object> attributes) throws OAuth2AuthenticationException {
-		User user = null;
 		String oauth2_id = null;
 		String id = null;
+		
+		User user = null;
+		
 		Map<String, Object> response = null;
 		
 		if(provider.equalsIgnoreCase("google")) {
