@@ -32,4 +32,5 @@ public class PageController {
 	public String loadMyPage() {
 		return "mypage";
 	}
+	
 }
